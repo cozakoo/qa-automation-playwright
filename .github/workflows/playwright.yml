@@ -1,10 +1,10 @@
-name: CI - Playwright Tests
+name: Playwright CI/CD
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
-    branches: [main]
+    branches: [main, master]
 
 jobs:
   test:
@@ -12,49 +12,39 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      # 1️⃣ Checkout del repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Configurar Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      # 3️⃣ Instalar dependencias
       - name: Install dependencies
         run: npm ci
 
-      # 4️⃣ Instalar navegadores de Playwright
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      # 5️⃣ Ejecutar tests con HTML y generar coverage
       - name: Run Playwright tests (HTML + Coverage)
         run: |
-          npx playwright test --reporter=html,json --output=playwright-report
+          npx playwright test --reporter=html
+          npx c8 --reporter=lcov --reporter=text npx playwright test
         env:
           LOGIN_URL: ${{ secrets.LOGIN_URL }}
           USER_CUIT: ${{ secrets.USER_CUIT }}
           USER_PASS: ${{ secrets.USER_PASS }}
 
-      # 6️⃣ Subir HTML report como artifact
       - name: Upload Playwright HTML report
         uses: actions/upload-artifact@v4
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         with:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
 
-      # 7️⃣ Generar coverage usando c8
-      - name: Generate coverage report
-        run: npx c8 --reporter=lcov --reporter=text npx playwright test --quiet
-
-      # 8️⃣ Subir coverage a Codecov
-      - name: Upload coverage to Codecov
+      - name: Upload coverage report to Codecov
         uses: codecov/codecov-action@v5
         with:
           files: coverage/lcov.info
