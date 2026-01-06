@@ -29,7 +29,7 @@ export class LoginPage {
 
 
     this.headingAfterLogin = page.getByRole('heading', {
-      name: 'Autotransporte Terrestre - Tr',
+      name: 'Autotransporte Terrestre - Trámites',
     });
     this.preloader = page.locator('.preloader');
 
