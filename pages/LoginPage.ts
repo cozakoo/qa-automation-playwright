@@ -41,12 +41,12 @@ export class LoginPage {
     }
 
     await this.page.goto(process.env.LOGIN_URL!, {
-      waitUntil: 'load',
-      timeout: 60000,
+      waitUntil: 'networkidle', // espera hasta que no haya más requests
+      timeout: 120000, //2 minutos
     });
 
     // Asegura que el formulario esté listo
-    await this.cuitInput.waitFor({ state: 'visible' });
+    await this.cuitInput.waitFor({ state: 'visible', timeout: 60000 });
   }
 
   async performLogin(cuit: string, password: string) {

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export default defineConfig({
+  timeout: 120000, // 2 minutos por test
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
@@ -14,13 +15,15 @@ export default defineConfig({
     baseURL: process.env.BASE_URL,
     headless: true,
     trace: 'on-first-retry',
+    actionTimeout: 60000, // 60s por fill/click/etc
+    navigationTimeout: 120000,
+    viewport: { width: 1280, height: 720 },
   },
 
   projects: [
     {
-      name: 'chromium',
+      name: 'brave',
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-
 });
