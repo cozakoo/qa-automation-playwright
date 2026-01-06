@@ -1,14 +1,9 @@
 # Proyecto QA Automation – Playwright
 
+![Node.js](https://img.shields.io/badge/Node.js-20-green)
 ![Playwright Tests](https://github.com/cozakoo/qa-automation-playwright/actions/workflows/playwright.yml/badge.svg)
-![Node.js](https://img.shields.io/badge/node-v18.x-brightgreen)
-![License](https://img.shields.io/github/license/cozakoo/qa-automation-playwright)
-![Last Commit](https://img.shields.io/github/last-commit/cozakoo/qa-automation-playwright)
-![npm](https://img.shields.io/badge/npm-10.x-blue)
-![Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen)
-![Dependencies](https://img.shields.io/librariesio/release/npm/qa-automation-playwright)
-![npm bundle size](https://img.shields.io/bundlephobia/minzip/qa-automation-playwright)
-
+![Codecov Coverage](https://codecov.io/gh/cozakoo/qa-automation-playwright/branch/main/graph/badge.svg?token=${{ secrets.CODECOV_TOKEN }})
+![License](https://img.shields.io/badge/license-ISC-blue)
 
 ## Índice
 - [Qué testea el proyecto](#qué-testea-el-proyecto)
