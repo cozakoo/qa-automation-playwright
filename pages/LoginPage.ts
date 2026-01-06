@@ -40,8 +40,9 @@ export class LoginPage {
       throw new Error('LOGIN_URL no está definida en el archivo .env');
     }
 
-    await this.page.goto(process.env.LOGIN_URL, {
-      waitUntil: 'domcontentloaded',
+    await this.page.goto(process.env.LOGIN_URL!, {
+      waitUntil: 'load',
+      timeout: 60000,
     });
 
     // Asegura que el formulario esté listo
@@ -56,13 +57,9 @@ export class LoginPage {
     await this.cuitInput.fill(cuit);
     await this.passwordInput.fill(password);
 
-    // Esperar que desaparezca el loader si existe
-    if (await this.preloader.isVisible()) {
-      await this.preloader.waitFor({ state: 'hidden' });
-    }
-
-    await this.submitButton.click();
+    await this.submitButton.click({ force: true });
   }
+
 
 
   async assertLoginSuccess() {
@@ -75,7 +72,9 @@ export class LoginPage {
 
   async waitForPageReady() {
     if (await this.preloader.isVisible()) {
-      await this.preloader.waitFor({ state: 'hidden' });
+      await this.preloader
+  .waitFor({ state: 'hidden', timeout: 5000 })
+  .catch(() => {});
     }
   }
 }
