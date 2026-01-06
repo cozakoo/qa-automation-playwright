@@ -25,7 +25,7 @@ jobs:
       run: npx playwright install --with-deps
 
     - name: Run Playwright tests
-      run: npx playwright test
+      run: npx playwright test --reporter=html
       env:
         LOGIN_URL: ${{ secrets.LOGIN_URL }}
         USER_CUIT: ${{ secrets.USER_CUIT }}
