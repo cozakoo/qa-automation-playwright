@@ -5,6 +5,10 @@ dotenv.config();
 
 export default defineConfig({
   timeout: 120000, // 2 minutos por test
+  expect: {
+    timeout: 30000, // 30s por expect()
+  },
+
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,

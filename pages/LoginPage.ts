@@ -54,11 +54,15 @@ export class LoginPage {
       throw new Error('CUIT o contraseña no definidos');
     }
 
-    await this.cuitInput.fill(cuit);
-    await this.passwordInput.fill(password);
+    // Espera a que la página y los inputs estén listos
+    await this.waitForPageReady();
+
+    await this.cuitInput.fill(cuit, { timeout: 120000 }); // hasta 2 min
+    await this.passwordInput.fill(password, { timeout: 120000 });
 
     await this.submitButton.click({ force: true });
   }
+
 
 
 
@@ -71,10 +75,19 @@ export class LoginPage {
   }
 
   async waitForPageReady() {
-    if (await this.preloader.isVisible()) {
-      await this.preloader
-  .waitFor({ state: 'hidden', timeout: 5000 })
-  .catch(() => {});
-    }
+  // Espera al preloader si existe
+  if (await this.preloader.isVisible()) {
+    await this.preloader
+      .waitFor({ state: 'hidden', timeout: 15000 }) // 15s, más confiable
+      .catch(() => {
+        console.warn('Preloader no desapareció a tiempo, continuando...');
+      });
   }
+
+  // Espera explícita a los campos de login
+  await this.cuitInput.waitFor({ state: 'visible', timeout: 120000 }); // 2 min
+  await this.passwordInput.waitFor({ state: 'visible', timeout: 120000 });
+  await this.submitButton.waitFor({ state: 'visible', timeout: 120000 });
+}
+
 }
